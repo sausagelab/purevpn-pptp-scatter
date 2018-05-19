@@ -19,7 +19,7 @@ Before you run it, you need to generate the NetworkManager PPTP/VPN configuratio
 This can be done using the generate.nm.pptp
 
 Running the generate script will prompt for your purevpn username and password - this is then used as variable to run:
-  "purevpn -t pptp -c <city name found from the $(purevpn -l)> -u <username> -p <password>"
+  "purevpn -t pptp -c <city name found from the $(purevpn -l)> -u \<username\> -p \<password\>"
   
 This will setup a new VPN config for every city purevpn has (with 1 exception... Korea South"... I think the output is not correct)
 There is surely a more elegant way to achieve the same result - but this worked for me and is re-runable.
