@@ -1,13 +1,16 @@
 #!/bin/sh
 
-#Drop and randomly reconnect VPN link
+#Drop existing VPN link
 
-for ex_conn in `/usr/bin/nmcli connection show | /usr/bin/grep 'vpn' | /usr/bin/grep 'eth0' | /usr/bin/awk '{print $1}'` ; do /usr/bin/nmcli connection down $ex_conn ; done
+for ex_conn in $(/usr/bin/nmcli connection show | /usr/bin/grep 'vpn' | /usr/bin/grep 'eth0' | sed -e "s/  */ /g" | awk -F "-PPTP| vpn " '{print $2}') ; do 
+	/usr/bin/nmcli connection down $ex_conn
+done
 
-/usr/bin/nmcli connection up $(/usr/bin/nmcli connection show | /usr/bin/grep vpn  | /usr/bin/shuf | /usr/bin/awk 'NR==1 {print $2}')
+#Start up a new VPN connection using shuf to randomly choose one
+/usr/bin/nmcli connection up $(/usr/bin/nmcli connection show | /usr/bin/grep vpn  | /usr/bin/sort -R | /usr/bin/head -1 | /usr/bin/sed -e "s/  */ /g" | /usr/bin/awk -F "-PPTP| vpn " '{print $2}')
 
 #check where we are
-/usr/bin/nmcli connection show | /usr/bin/grep vpn | /usr/bin/grep eth0 | /usr/bin/awk '{print $1}'
+/usr/bin/nmcli connection show | /usr/bin/grep vpn | /usr/bin/grep eth0 | sed -e "s/  */ /g" | awk -F "-PPTP| vpn " '{print $1}'
 /usr/bin/curl ipinfo.io 2> /dev/null  | /usr/bin/egrep 'region|country'
 
 #restart squid
