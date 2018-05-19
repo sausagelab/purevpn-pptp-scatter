@@ -12,9 +12,7 @@ I'm using this with:
 
 With the following installed:
 
-purevpn-networkmanager (AUR)
-networkmanager-pptp
-
+-- purevpn-networkmanager (AUR), networkmanager-pptp
 
 Before you run it, you need to generate the NetworkManager PPTP/VPN configurations.
 This can be done using the generate.nm.pptp
