@@ -1,0 +1,14 @@
+#!/bin/sh
+
+#Drop and randomly reconnect VPN link
+
+for ex_conn in `/usr/bin/nmcli connection show | /usr/bin/grep 'vpn' | /usr/bin/grep 'eth0' | /usr/bin/awk '{print $1}'` ; do /usr/bin/nmcli connection down $ex_conn ; done
+
+/usr/bin/nmcli connection up $(/usr/bin/nmcli connection show | /usr/bin/grep vpn  | /usr/bin/shuf | /usr/bin/awk 'NR==1 {print $2}')
+
+#check where we are
+/usr/bin/nmcli connection show | /usr/bin/grep vpn | /usr/bin/grep eth0 | /usr/bin/awk '{print $1}'
+/usr/bin/curl ipinfo.io 2> /dev/null  | /usr/bin/egrep 'region|country'
+
+#restart squid
+/usr/bin/systemctl restart squid
