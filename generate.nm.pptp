@@ -1,0 +1,10 @@
+#! /bin/bash
+IFS=$'\n' 
+echo -n "Purevpn User name (example. purevpn0s0123456)"
+read user
+echo -n "Purevpn User password"
+read -s password
+for loc in $(purevpn -l| col | awk -F ", " ' NR>2{print $2}' | sed -e 's/1m//g' -e 's/Bm//g' )
+    do echo "Setting up $loc"
+	    purevpn -t pptp -c ${loc} -u $user -p $password
+done
